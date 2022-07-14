@@ -1,19 +1,37 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import SigninScreen from "./screens/SigninScreen";
+import SignupScreen from "./screens/SignupScreen";
+import HomeScreen from "./screens/HomeScreen";
 
-export default function App() {
+const Stack = createStackNavigator();
+
+const AuthenticatedStack = () => {
   return (
-    <View style={styles.container}>
-        
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen name="home" component={HomeScreen} />
+    </Stack.Navigator>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const AuthStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Signin" component={SigninScreen} />
+      <Stack.Screen name="Signup" component={SignupScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const App = () => {
+  return (
+    <>
+      <NavigationContainer>
+        <AuthStack />
+      </NavigationContainer>
+    </>
+  );
+};
+export default App;
