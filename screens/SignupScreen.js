@@ -1,18 +1,50 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-} from "react-native";
-import React from "react";
+import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
 const SignupScreen = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const navigateHandler = () => {
     navigation.navigate("Signin");
+  };
+  const submitHandler = () => {
+    if (email !== "" && password !== "") {
+      let headersList = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+
+      let bodyContent = {
+        email: email,
+        password: password,
+        returnSecureToken: "true",
+      };
+
+      let reqOptions = {
+        url: "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBmunXZi1nkmO5Q_wEp2RefQpFRD_pJl1o",
+        method: "POST",
+        headers: headersList,
+        data: bodyContent,
+      };
+
+      axios(reqOptions)
+        .then((res) => {
+          console.log(res.data.idToken);
+        })
+        .catch((error) => {
+          // console.log(error);
+        });
+      setEmail("");
+      setPassword("");
+    } else {
+      if (email === "" && password === "") {
+        alert("Enter your credentials...");
+      }
+    }
   };
   return (
     <View style={styles.container}>
@@ -22,19 +54,27 @@ const SignupScreen = () => {
         </View>
         <View style={styles.form}>
           <View style={styles.emailContainer}>
-            <TextInput placeholder="Email" style={styles.input} />
+            <TextInput
+              placeholder="Email"
+              style={styles.input}
+              value={email}
+              onChangeText={(e) => setEmail(e)}
+            />
           </View>
           <View style={styles.passwordContainer}>
             <TextInput
               placeholder="Password"
               secureTextEntry={true}
               style={styles.input}
+              value={password}
+              onChangeText={(e) => setPassword(e)}
             />
           </View>
         </View>
         <View style={styles.buttonContainer}>
           <Pressable
             style={({ pressed }) => [styles.btn, pressed && styles.pressable]}
+            onPress={submitHandler}
           >
             <Text style={styles.btnText}>Signup</Text>
           </Pressable>
