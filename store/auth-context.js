@@ -1,42 +1,35 @@
-import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const AuthContext = React.createContext({
+import { createContext, useEffect, useState } from "react";
+
+export const AuthContext = createContext({
   token: "",
-  isLoggedIn: false,
-  login: (token) => {},
+  isAuthenticated: false,
+  authenticate: (token) => {},
   logout: () => {},
 });
 
-export const AuthContextProvider = (props) => {
-  const initialToken = AsyncStorage.getItem("token");
-  const [token, setToken] = useState(initialToken);
+const AuthContextProvider = (props) => {
+  const [authToken, setAuthToken] = useState(null);
 
-  const userIsLoggedIn = !!token;
-
-  const logoutHandler = () => {
-    setToken(null);
-    // localStorage.removeItem("token");
+  const authenticate = (token) => {
+    setAuthToken(token);
+    AsyncStorage.setItem("token", token);
+  };
+  const logout = () => {
+    setAuthToken(null);
     AsyncStorage.removeItem("token");
   };
 
-  const loginHandler = (token) => {
-    setToken(token);
-    // localStorage.setItem("token", token);
-    AsyncStorage.setItem("token", token);
-  };
-
-  const contextValue = {
-    token: token,
-    isLoggedIn: userIsLoggedIn,
-    login: loginHandler,
-    logout: logoutHandler,
+  const value = {
+    token: authToken,
+    isAuthenticated: !!authToken,
+    authenticate: authenticate,
+    logout: logout,
   };
 
   return (
-    <AuthContext.Provider value={contextValue}>
-      {props.children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>
   );
 };
-export default AuthContext;
+export default AuthContextProvider;
