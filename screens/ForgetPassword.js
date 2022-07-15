@@ -24,7 +24,7 @@ const ForgetPassword = () => {
 
         let bodyContent = {
           requestType: "PASSWORD_RESET",
-          email: email, 
+          email: email,
         };
 
         let reqOptions = {
@@ -37,7 +37,7 @@ const ForgetPassword = () => {
         axios(reqOptions)
           .then((res) => {
             setIsLoading(false);
-            authCtx.authenticate(res.data.idToken);
+            console.log(res);
           })
           .catch((error) => {
             setIsLoading(false);
