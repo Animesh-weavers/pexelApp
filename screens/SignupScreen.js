@@ -47,7 +47,6 @@ const SignupScreen = () => {
           })
           .catch((error) => {
             setIsLoading(false);
-            // console.log(error.response.data.error.code);
             if (error.response.data.error.code) {
               alert(error.response.data.error.message);
             }
@@ -99,7 +98,7 @@ const SignupScreen = () => {
             </View>
             <View style={styles.navigateContainer}>
               <Text style={styles.navigateText} onPress={navigateHandler}>
-                Have an accout?
+                Don't have an accout?
               </Text>
             </View>
           </View>

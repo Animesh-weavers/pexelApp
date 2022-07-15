@@ -7,6 +7,7 @@ import HomeScreen from "./screens/HomeScreen";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoaderScreen from "./screens/LoaderScreen";
+import ForgetPassword from "./screens/ForgetPassword";
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,7 @@ const AuthStack = () => {
     >
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="Signin" component={SigninScreen} />
+      <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
     </Stack.Navigator>
   );
 };

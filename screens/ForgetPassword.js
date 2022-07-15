@@ -5,22 +5,17 @@ import axios from "axios";
 import { AuthContext } from "../store/auth-context";
 import LoaderScreen from "./LoaderScreen";
 
-const SignupScreen = () => {
+const ForgetPassword = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const authCtx = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
-
-  const navigateHandler = () => {
-    navigation.navigate("Signup");
-  };
   const submitHandler = () => {
-    if (email === "" && password === "") {
+    if (email === "") {
       alert("Enter your credentials");
     }
-    if (email.trim().includes("@") && password.length >= 6) {
-      if (email !== "" && password !== "") {
+    if (email.trim().includes("@")) {
+      if (email !== "") {
         setIsLoading(true);
         let headersList = {
           Accept: "application/json",
@@ -28,13 +23,12 @@ const SignupScreen = () => {
         };
 
         let bodyContent = {
-          email: email,
-          password: password,
-          returnSecureToken: "true",
+          requestType: "PASSWORD_RESET",
+          email: email, 
         };
 
         let reqOptions = {
-          url: "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBmunXZi1nkmO5Q_wEp2RefQpFRD_pJl1o",
+          url: "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBmunXZi1nkmO5Q_wEp2RefQpFRD_pJl1o",
           method: "POST",
           headers: headersList,
           data: bodyContent,
@@ -52,14 +46,10 @@ const SignupScreen = () => {
             }
           });
         setEmail("");
-        setPassword("");
       }
     } else {
-      alert("Enter your credentials...");
+      alert("Enter your Email...");
     }
-  };
-  const forgetPasswordNavigationHandler = () => {
-    navigation.navigate("ForgetPassword");
   };
   return (
     <>
@@ -78,21 +68,6 @@ const SignupScreen = () => {
                   onChangeText={(e) => setEmail(e)}
                 />
               </View>
-              <View style={styles.passwordContainer}>
-                <TextInput
-                  placeholder="Password"
-                  secureTextEntry={true}
-                  style={styles.input}
-                  value={password}
-                  onChangeText={(e) => setPassword(e)}
-                />
-                <Text
-                  style={styles.forgetPassword}
-                  onPress={forgetPasswordNavigationHandler}
-                >
-                  Forget Password?
-                </Text>
-              </View>
             </View>
             <View style={styles.buttonContainer}>
               <Pressable
@@ -102,13 +77,8 @@ const SignupScreen = () => {
                 ]}
                 onPress={submitHandler}
               >
-                <Text style={styles.btnText}>Signin</Text>
+                <Text style={styles.btnText}>Send</Text>
               </Pressable>
-            </View>
-            <View style={styles.navigateContainer}>
-              <Text style={styles.navigateText} onPress={navigateHandler}>
-                Create an accout?
-              </Text>
             </View>
           </View>
         </View>
@@ -118,7 +88,7 @@ const SignupScreen = () => {
   );
 };
 
-export default SignupScreen;
+export default ForgetPassword;
 
 const styles = StyleSheet.create({
   container: {
@@ -133,7 +103,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 35,
-
     paddingBottom: 30,
   },
   titleContainer: {
@@ -190,11 +159,5 @@ const styles = StyleSheet.create({
   },
   navigateText: {
     color: "white",
-  },
-  forgetPassword: {
-    color: "white",
-    textDecorationLine: "underline",
-    textAlign: "right",
-    marginTop: 5,
   },
 });
