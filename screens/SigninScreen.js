@@ -107,7 +107,7 @@ const SignupScreen = () => {
             </View>
             <View style={styles.navigateContainer}>
               <Text style={styles.navigateText} onPress={navigateHandler}>
-                Create an accout?
+                Don't have an accout?
               </Text>
             </View>
           </View>
